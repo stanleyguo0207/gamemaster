@@ -100,9 +100,11 @@ if [[ -z $image_hash ]]; then
   docker pull hello-world:latest
   docker pull gcc:13-bookworm
   docker build --network=host --no-cache -f $docker_file -t $image_name:$image_tag $build_arg .
+
+  image_hash=$(docker images -q "$image_name:$image_tag")
 fi
 
-if [[ -z $container_hash ]]; then
+if [[ -n $image_hash && -z $container_hash ]]; then
   docker create --name $container_name -p $ssh_port:22 --security-opt seccomp=unconfined --privileged=true --restart=always $image_name:$image_tag /sbin/init
   docker start $container_name
 fi

@@ -146,7 +146,10 @@ RUN set -eux; \
   echo "set encoding=utf-8" >> .vimrc; \
   mkdir -p .vscode-server/data/Machine; \
   mv settings.json .vscode-server/data/Machine/; \
-  chown -R $GAMEMASTER_USER:$GAMEMASTER_USER $GAMEMASTER_HOME;
+  chown -R $GAMEMASTER_USER:$GAMEMASTER_USER $GAMEMASTER_HOME; \
+  # passwd
+  echo "root:root" | chpasswd; \
+  echo "$GAMEMASTER_USER:$GAMEMASTER_USER" | chpasswd;
 
 USER ${GAMEMASTER_USER}
 
